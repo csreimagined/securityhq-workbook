@@ -1,0 +1,620 @@
+<meta charset="utf-8">
+<title>SecurityHQ Value Workbook</title>
+<meta name="description" content="Interactive ROSI calculator and business-value workbook for SecurityHQ customer conversations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,440;9..144,560;9..144,650&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#e9eef3;
+  --panel:#ffffff;
+  --panel-2:#f4f7fa;
+  --ink:#0d1f30;
+  --navy:#0a2036;
+  --navy-2:#0f2f4c;
+  --blue:#0d6fa0;
+  --blue-soft:#e4f0f6;
+  --sage:#4c6b3f;
+  --sage-soft:#e6ede1;
+  --amber:#a3691f;
+  --amber-soft:#f3e7d4;
+  --line:#d7dfe6;
+  --slate:#57697a;
+  --slate-soft:#8195a5;
+  --focus:#0d6fa0;
+  --shadow:0 10px 30px -12px rgba(10,32,54,.28);
+}
+*{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"IBM Plex Sans",Arial,Helvetica,sans-serif;
+  line-height:1.5;
+  font-size:15px;
+}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:"Fraunces","Iowan Old Style",Georgia,serif;font-weight:650;letter-spacing:-.01em;text-wrap:balance;color:var(--navy);margin:0}
+::selection{background:var(--blue);color:#fff}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+/* ---------- masthead / nav ---------- */
+.masthead{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.08)}
+.masthead-top{height:4px;background:linear-gradient(90deg,var(--blue),#4fb7cf,var(--sage))}
+.masthead-row{max-width:1040px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:11px 20px}
+.wordmark{font-family:"Fraunces",Georgia,serif;font-weight:650;font-size:18px;letter-spacing:-.01em;white-space:nowrap}
+.wordmark b{color:#7fd0e6;font-weight:650}
+.railnav{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1}
+.railnav::-webkit-scrollbar{display:none}
+.railnav a{flex:none;color:#b9c9d6;text-decoration:none;font-size:12px;letter-spacing:.03em;padding:7px 11px;border-radius:5px;white-space:nowrap;transition:color .15s,background .15s}
+.railnav a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.railnav a.active{color:#fff;background:rgba(255,255,255,.14)}
+.tools{display:flex;gap:8px;flex:none}
+.btn{font:inherit;font-size:12px;font-weight:600;letter-spacing:.02em;border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;padding:7px 12px;border-radius:5px;cursor:pointer;white-space:nowrap;transition:background .15s,border-color .15s}
+.btn:hover{background:rgba(255,255,255,.12)}
+.btn.primary{background:var(--blue);border-color:var(--blue)}
+.btn.primary:hover{background:#0b5f8b}
+.btn.ghost{border-color:var(--line);color:var(--slate)}
+.btn.ghost:hover{background:var(--panel-2)}
+
+/* ---------- results tray ---------- */
+.tray{position:fixed;right:18px;bottom:18px;z-index:50;background:var(--navy);color:#fff;border-radius:10px;box-shadow:var(--shadow);padding:13px 16px;width:250px;font-size:12px}
+.tray h4{margin:0 0 9px;font-family:"IBM Plex Sans";font-size:10.5px;text-transform:uppercase;letter-spacing:.09em;color:#9fc7d8;font-weight:600}
+.tray-row{display:flex;justify-content:space-between;align-items:baseline;padding:5px 0;border-top:1px solid rgba(255,255,255,.12)}
+.tray-row:first-of-type{border-top:0}
+.tray-row span:first-child{color:#b9c9d6}
+.tray-row span:last-child{font-family:"IBM Plex Mono";font-weight:600;font-size:13px}
+.tray[data-state="positive"] .tray-value-rosi{color:#8fd39a}
+.tray[data-state="negative"] .tray-value-rosi{color:#e2a15c}
+.tray-hint{margin-top:9px;font-size:10.5px;color:#7d93a3;line-height:1.4}
+
+/* ---------- sheets ---------- */
+main{max-width:880px;margin:0 auto;padding:34px 20px 90px}
+.sheet{background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);margin-bottom:26px;overflow:hidden;scroll-margin-top:64px}
+.sheet-bar{height:5px;background:linear-gradient(90deg,var(--blue),#4fb7cf,var(--sage))}
+.sheet-body{padding:38px 42px}
+@media (max-width:640px){.sheet-body{padding:26px 20px}}
+
+.eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);font-weight:700;margin:0 0 8px}
+.lead{color:var(--slate);font-size:14.5px;max-width:620px;margin:8px 0 0}
+
+/* ---------- cover ---------- */
+.cover h1{font-size:clamp(30px,4.6vw,42px);line-height:1.08;margin:10px 0 14px;max-width:600px}
+.cover h1 em{font-style:normal;color:var(--blue)}
+.cover-meta{margin-top:26px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;border-top:1px solid var(--line);padding-top:20px}
+.metafield label{display:block;font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--slate-soft);font-weight:600;margin-bottom:6px}
+.strap{margin-top:24px;padding:14px 18px;background:var(--navy);color:#fff;border-left:5px solid var(--sage);font-size:16px;font-weight:600;border-radius:0 6px 6px 0}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:26px}
+@media (max-width:700px){.grid4{grid-template-columns:1fr 1fr}}
+.card{border:1px solid var(--line);border-radius:7px;padding:15px;background:var(--panel-2)}
+.card .n{font-family:"IBM Plex Mono";font-size:22px;font-weight:600;color:var(--blue)}
+.card h3{font-family:"IBM Plex Sans";font-size:13.5px;font-weight:700;margin:6px 0 5px;color:var(--navy)}
+.card p{font-size:11.5px;margin:0;color:var(--slate)}
+
+/* ---------- value tree ---------- */
+.problem{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:9px;margin:16px 0}
+@media (max-width:700px){.problem{grid-template-columns:1fr}}
+.problem div{padding:14px;background:var(--panel-2);border-top:3px solid var(--blue);border-radius:0 0 6px 6px;font-size:12px}
+.problem b{display:block;font-size:12.5px;color:var(--navy);margin-bottom:5px;font-weight:700}
+.flow{color:var(--blue);font-weight:700;font-size:12px;text-align:center;margin:6px 0 4px;letter-spacing:.02em}
+.topnode{background:var(--navy);color:#fff;padding:14px 18px;border-radius:7px;font-size:15px;font-weight:600;text-align:center;margin-top:18px;font-family:"Fraunces",serif}
+.branches{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:12px}
+@media (max-width:700px){.branches{grid-template-columns:1fr 1fr}}
+.branch{border:1px solid var(--line);border-radius:7px;padding:13px}
+.branch h3{font-family:"IBM Plex Sans";font-size:13px;font-weight:700;margin:0 0 8px;color:var(--blue)}
+.branch ul{padding-left:16px;margin:0;color:var(--slate);font-size:11.5px}
+.branch li{margin-bottom:7px}
+
+/* ---------- matrix table ---------- */
+.tbl{width:100%;border-collapse:collapse;margin-top:14px;font-size:11.5px}
+.tbl-wrap{overflow-x:auto;margin-top:14px}
+.tbl th{background:var(--navy);color:#fff;padding:9px 10px;text-align:left;font-size:10.5px;font-weight:600;letter-spacing:.02em}
+.tbl td{border:1px solid var(--line);vertical-align:top;padding:10px}
+.tbl tr:nth-child(even) td{background:var(--panel-2)}
+.pill{display:inline-block;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 7px;background:var(--blue-soft);color:var(--blue);border-radius:3px;margin-bottom:5px}
+.formula{margin:20px 0;background:var(--panel-2);border:1px solid var(--line);border-radius:7px;padding:16px 20px}
+.formula strong{font-size:13.5px;color:var(--navy);font-weight:700}
+.formula code{font-family:"IBM Plex Mono";display:block;font-size:16px;color:var(--blue);font-weight:600;margin:7px 0;background:none}
+
+/* ---------- worksheet / form fields ---------- */
+.worksheet{border:1px solid var(--line);border-radius:8px;padding:18px 20px;margin-top:16px}
+.worksheet h3{font-family:"IBM Plex Sans";font-size:14px;font-weight:700;margin:0 0 4px;color:var(--navy)}
+.worksheet .sub{font-size:11px;color:var(--slate-soft);margin:0 0 10px}
+.field{display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:12px;align-items:center;border-top:1px solid var(--line);padding:9px 0}
+.field:first-of-type{border-top:0}
+@media (max-width:640px){.field{grid-template-columns:1fr}}
+.field b{color:#263e52;font-size:12px;font-weight:600}
+.field .unit{color:var(--slate-soft);font-size:11px}
+
+input[type=text],input[type=number],input[type=date],select{
+  font-family:"IBM Plex Mono";font-size:12.5px;color:var(--ink);
+  background:var(--panel-2);border:1px solid var(--line);border-radius:5px;
+  padding:7px 9px;width:100%;transition:border-color .15s,background .15s;
+}
+input[type=text]{font-family:"IBM Plex Sans"}
+input:hover,select:hover{border-color:var(--slate-soft)}
+input:focus,select:focus{background:#fff;border-color:var(--blue)}
+input::placeholder{color:var(--slate-soft)}
+.gbp-field{position:relative}
+.gbp-field::before{content:"£";position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--slate-soft);font-family:"IBM Plex Mono";font-size:12.5px;pointer-events:none}
+.gbp-field input{padding-left:20px}
+.pct-field{position:relative}
+.pct-field input{padding-right:22px}
+.pct-field::after{content:"%";position:absolute;right:9px;top:50%;transform:translateY(-50%);color:var(--slate-soft);font-family:"IBM Plex Mono";font-size:12.5px}
+
+/* ---------- ROSI calc table ---------- */
+.calctbl{width:100%;border-collapse:collapse;margin-top:14px;font-size:12px}
+.calctbl th{background:var(--navy);color:#fff;padding:9px 10px;text-align:left;font-size:10.5px;font-weight:600}
+.calctbl td{border:1px solid var(--line);padding:10px;vertical-align:top}
+.calctbl tr:nth-child(even) td{background:var(--panel-2)}
+.rowlabel b{display:block;font-size:12.5px;color:var(--navy);font-weight:700}
+.rowlabel span{font-size:10.5px;color:var(--slate-soft)}
+.inline-inputs{display:flex;flex-wrap:wrap;gap:8px}
+.inline-inputs .iw{width:110px}
+.inline-inputs label{display:block;font-size:9.5px;color:var(--slate-soft);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.outcell{font-family:"IBM Plex Mono";font-weight:700;font-size:14px;color:var(--sage);white-space:nowrap}
+.calctbl tfoot td{background:var(--navy-2);color:#fff;font-weight:700}
+.calctbl tfoot .outcell{color:#8fd39a;font-size:16px}
+.calctbl tfoot input{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);color:#fff}
+.calctbl tfoot .gbp-field::before{color:#bcd4e0}
+
+.formula .liveline{display:flex;flex-wrap:wrap;gap:18px;margin-top:8px}
+.formula .liveline div{font-size:11.5px;color:var(--slate)}
+.formula .liveline b{display:block;font-family:"IBM Plex Mono";font-size:19px;color:var(--navy);font-weight:600}
+.formula .liveline b.pos{color:var(--sage)}
+.formula .liveline b.neg{color:var(--amber)}
+
+.calc-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px;margin-top:16px}
+@media (max-width:700px){.calc-grid{grid-template-columns:1fr}}
+.callout{background:linear-gradient(150deg,var(--navy),var(--navy-2));color:#fff;border-radius:8px;padding:20px 22px}
+.callout h3{font-family:"IBM Plex Sans";margin:0 0 8px;font-size:14.5px;font-weight:700;color:#9fc7d8;text-transform:uppercase;letter-spacing:.06em}
+.callout p{font-size:15px;margin:0;color:#eaf1f5;line-height:1.55}
+.callout .figure{font-family:"IBM Plex Mono";color:#8fd39a;font-weight:700}
+.next{border:1px solid var(--line);border-radius:8px;padding:18px 20px}
+.next h3{font-family:"IBM Plex Sans";margin:0 0 9px;font-size:14px;font-weight:700;color:var(--navy)}
+.next ol{margin:0;padding-left:18px;font-size:12px;color:var(--slate)}
+.next li{margin-bottom:7px}
+
+/* ---------- scorecard ---------- */
+.scorefield{display:grid;grid-template-columns:1.8fr 1fr 1fr;gap:12px;align-items:center;border-top:1px solid var(--line);padding:10px 0}
+.scorefield:first-of-type{border-top:0}
+@media (max-width:640px){.scorefield{grid-template-columns:1fr}}
+.badge{display:inline-block;font-family:"IBM Plex Mono";font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px}
+.badge.on-track{background:var(--sage-soft);color:var(--sage)}
+.badge.behind{background:var(--amber-soft);color:var(--amber)}
+.badge.neutral{background:var(--panel-2);color:var(--slate-soft)}
+
+footer.pagefoot{max-width:880px;margin:0 auto;padding:0 20px 40px;color:var(--slate-soft);font-size:10.5px;display:flex;justify-content:space-between;gap:20px}
+
+/* ---------- print ---------- */
+@media print{
+  .masthead,.tray{display:none!important}
+  body{background:#fff}
+  main{max-width:none;padding:0}
+  .sheet{box-shadow:none;border:none;border-radius:0;margin:0;page-break-after:always}
+  .sheet:last-child{page-break-after:auto}
+  .sheet-body{padding:14mm}
+  footer.pagefoot{display:none}
+}
+</style>
+
+<div class="masthead">
+  <div class="masthead-top"></div>
+  <div class="masthead-row">
+    <div class="wordmark">Security<b>HQ</b></div>
+    <nav class="railnav" id="railnav">
+      <a href="#page1" data-n="1">Cover</a>
+      <a href="#page2" data-n="2">Value map</a>
+      <a href="#page3" data-n="3">Translation</a>
+      <a href="#page4" data-n="4">Baseline</a>
+      <a href="#page5" data-n="5">ROSI calc</a>
+      <a href="#page6" data-n="6">QBR score</a>
+    </nav>
+    <div class="tools">
+      <button class="btn ghost" id="resetBtn" type="button">Reset</button>
+      <button class="btn primary" id="printBtn" type="button">Print / PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="tray" id="tray" data-state="neutral">
+  <h4>Live ROSI snapshot</h4>
+  <div class="tray-row"><span>Total annual value</span><span class="mono" id="trayTotal">£0</span></div>
+  <div class="tray-row"><span>Annual investment</span><span class="mono" id="trayInvestment">£0</span></div>
+  <div class="tray-row"><span>Return on investment</span><span class="mono tray-value-rosi" id="trayRosi">—</span></div>
+  <div class="tray-row"><span>Payback period</span><span class="mono" id="trayPayback">—</span></div>
+  <div class="tray-hint">Updates as you complete the ROSI calculation worksheet below.</div>
+</div>
+
+<main>
+
+<!-- PAGE 1 — COVER -->
+<section class="sheet cover" id="page1">
+  <div class="sheet-bar"></div>
+  <div class="sheet-body">
+    <p class="eyebrow">Board-ready business case</p>
+    <h1>Turn security performance into <em>measurable business value.</em></h1>
+    <p class="lead">A working document for <span id="custDisplay1">your customer</span> — connect 24/7 MXDR, risk management and automated response to lower loss exposure, lower operating cost and stronger business resilience. Fill in the fields below; every number you enter here carries through to the ROSI calculation on page 5.</p>
+
+    <div class="cover-meta">
+      <div class="metafield"><label>Customer</label><input type="text" id="fCustomer" data-key="fCustomer" placeholder="Acme Logistics Ltd"></div>
+      <div class="metafield"><label>Executive sponsor</label><input type="text" id="fSponsor" data-key="fSponsor" placeholder="e.g. CISO, COO"></div>
+      <div class="metafield"><label>Date prepared</label><input type="date" id="fDate" data-key="fDate"></div>
+    </div>
+
+    <div class="strap">Less panic. More risk management. A clear, evidence-based case for every pound invested in cyber resilience.</div>
+
+    <div class="grid4">
+      <div class="card"><div class="n mono">01</div><h3>Baseline</h3><p>Capture current security spend, alert volumes, incidents, downtime and top business risks.</p></div>
+      <div class="card"><div class="n mono">02</div><h3>Translate</h3><p>Link technical improvements to hours saved, loss avoided and revenue protected.</p></div>
+      <div class="card"><div class="n mono">03</div><h3>Quantify</h3><p>Calculate annual value, payback and return on security investment.</p></div>
+      <div class="card"><div class="n mono">04</div><h3>Prove</h3><p>Track outcome metrics through QBRs and board reporting.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 2 — VALUE MAP -->
+<section class="sheet" id="page2">
+  <div class="sheet-bar"></div>
+  <div class="sheet-body">
+    <p class="eyebrow">Value map</p>
+    <h2 style="font-size:26px">From security signal to business outcome</h2>
+    <p class="lead">Start with <span id="custDisplay2">the customer's</span> operating problem, then connect the SecurityHQ capability to a financial or strategic outcome. Keep technical metrics as evidence, not as the headline.</p>
+
+    <div class="problem">
+      <div><b>Customer problem</b>Alert overload, fragmented visibility, slow containment and unprioritised risk create operational drag and leave material exposure unmanaged.</div>
+      <div><b>SecurityHQ intervention</b>24/7/365 MXDR, lower noise-to-signal, risk-based mitigation, collaborative response and automated containment.</div>
+      <div><b>Business outcome</b>Fewer wasted analyst hours, lower expected loss, less downtime, reduced tool cost and stronger evidence for compliance and trust.</div>
+    </div>
+    <p class="flow">Customer pain &nbsp;→&nbsp; SecurityHQ capability &nbsp;→&nbsp; Measurable business result</p>
+
+    <div class="topnode">SecurityHQ business value = risk reduction + cost efficiency + resilience + growth enablement</div>
+    <div class="branches">
+      <div class="branch"><h3>Risk reduction</h3><ul><li>Earlier detection and containment</li><li>Smaller incident blast radius</li><li>Prioritised vulnerabilities and risks</li><li>Measure: annual loss exposure reduced</li></ul></div>
+      <div class="branch"><h3>Cost efficiency</h3><ul><li>Fewer false positives to triage</li><li>Automated workflows and reporting</li><li>Consolidated technology spend</li><li>Measure: security opex avoided</li></ul></div>
+      <div class="branch"><h3>Business resilience</h3><ul><li>24/7 monitoring and response</li><li>Faster recovery and containment</li><li>Less disruption to critical services</li><li>Measure: downtime cost avoided</li></ul></div>
+      <div class="branch"><h3>Growth &amp; governance</h3><ul><li>Framework-mapped controls</li><li>Audit-ready evidence and reporting</li><li>Customer and stakeholder confidence</li><li>Measure: time to assurance, deals enabled</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 3 — TRANSLATION MATRIX -->
+<section class="sheet" id="page3">
+  <div class="sheet-bar"></div>
+  <div class="sheet-body">
+    <p class="eyebrow">Value translation matrix</p>
+    <h2 style="font-size:26px">Translate the technical story</h2>
+    <p class="lead">SecurityHQ describes lower noise-to-signal, 24/7 response, automated containment, risk mapping and workflow automation. Position each as a change in business performance.</p>
+
+    <div class="tbl-wrap">
+    <table class="tbl">
+      <thead><tr><th>SecurityHQ capability</th><th>Operational change</th><th>Business value driver</th><th>Customer evidence to collect</th></tr></thead>
+      <tbody>
+        <tr><td><span class="pill">Signal quality</span><br>Lower noise-to-signal and expert prioritisation</td><td>Fewer low-value alerts, less manual triage, more analyst capacity for material threats</td><td>Labour capacity released; lower incident-handling cost; improved response quality</td><td>Alerts per month; false-positive rate; minutes per alert; fully loaded analyst cost</td></tr>
+        <tr><td><span class="pill">MXDR</span><br>24/7/365 detection, investigation and response</td><td>Earlier detection, reduced attacker dwell time, faster escalation</td><td>Lower likelihood and impact of successful incidents</td><td>MTTD; MTTR; historic incidents; critical-asset coverage; incident cost</td></tr>
+        <tr><td><span class="pill">Containment</span><br>Automated actions to block communications and isolate infected machines</td><td>Faster containment; reduced lateral movement and outage duration</td><td>Downtime avoided; revenue protected; reduced recovery cost</td><td>Critical-service downtime; revenue/productivity per hour; recovery cost per incident</td></tr>
+        <tr><td><span class="pill">Risk centre</span><br>Threat, asset and vulnerability mapping with mitigation tracking</td><td>Risk-based prioritisation, accountable actions and remediation progress</td><td>Reduced exposure; less audit effort; more efficient remediation investment</td><td>Overdue critical risks; remediation time; audit findings; external consulting hours</td></tr>
+        <tr><td><span class="pill">Framework mapping</span><br>NIST, NCSC and MITRE-aligned actions</td><td>Clearer governance, repeatable evidence, shared language for assurance</td><td>Faster audits; avoided rework; customer trust and tender readiness</td><td>Audit-prep hours; compliance exceptions; security questionnaires; deals influenced</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <div class="formula"><strong>Messaging formula</strong><code>Technical improvement → operational change → financial or strategic outcome</code>Example: "Automated containment reduces time to isolate compromised assets, helping protect revenue and reduce recovery cost when a critical incident occurs."</div>
+  </div>
+</section>
+
+<!-- PAGE 4 — BASELINE WORKSHEET -->
+<section class="sheet" id="page4">
+  <div class="sheet-bar"></div>
+  <div class="sheet-body">
+    <p class="eyebrow">Customer value worksheet</p>
+    <h2 style="font-size:26px">Build the customer baseline</h2>
+    <p class="lead">Complete this with the security sponsor, finance partner and operational owner. Use ranges where data is uncertain, and record it as such — the goal is a defensible starting point, not a perfect one.</p>
+
+    <div class="worksheet">
+      <h3>Operating profile</h3>
+      <div class="field"><b>Business unit / scope protected</b><input type="text" data-key="bScope" placeholder="e.g. UK operations"><input type="text" data-key="bOwner" placeholder="Owner"></div>
+      <div class="field"><b>Critical applications, systems or services</b><input type="text" data-key="bApps" placeholder="e.g. order management, EDI"><input type="text" data-key="bAvailability" placeholder="Availability target"></div>
+      <div class="field"><b>Current SOC / security operations model</b><input type="text" data-key="bSOC" placeholder="e.g. in-house, hybrid"><input type="text" data-key="bCoverage" placeholder="Coverage hours"></div>
+      <div class="field"><b>Annual security tool &amp; services spend</b><div class="gbp-field"><input type="number" min="0" data-key="bSpend" placeholder="0"></div>
+        <select data-key="bSpendConfidence"><option value="">Confidence</option><option>High</option><option>Medium</option><option>Low</option></select></div>
+    </div>
+
+    <div class="worksheet">
+      <h3>Alert &amp; response baseline</h3>
+      <div class="field"><b>Alerts received per month</b><input type="number" min="0" data-key="bAlerts" placeholder="0"><input type="text" data-key="bAlertsSource" placeholder="Source"></div>
+      <div class="field"><b>Estimated false-positive / low-value rate</b><div class="pct-field"><input type="number" min="0" max="100" data-key="bFPRate" placeholder="0"></div><input type="text" data-key="bFPSource" placeholder="Source"></div>
+      <div class="field"><b>Average triage minutes per alert</b><input type="number" min="0" data-key="bTriageMin" placeholder="0"><div class="gbp-field"><input type="number" min="0" data-key="bHourlyCost" placeholder="Loaded £/hr"></div></div>
+      <div class="field"><b>MTTD / MTTR for critical incidents</b><input type="text" data-key="bMTTD" placeholder="MTTD"><input type="text" data-key="bMTTR" placeholder="MTTR"></div>
+    </div>
+
+    <div class="worksheet">
+      <h3>Incident &amp; downtime baseline</h3>
+      <div class="field"><b>Material cyber incidents, last 12 months</b><input type="number" min="0" data-key="bIncidents" placeholder="0"><input type="text" data-key="bIncidentFreq" placeholder="Est. annual frequency"></div>
+      <div class="field"><b>Average cost per material incident</b><div class="gbp-field"><input type="number" min="0" data-key="bIncidentCost" placeholder="0"></div><span class="unit">Recovery, forensics, disruption</span></div>
+      <div class="field"><b>Security-related downtime, hours/year</b><input type="number" min="0" data-key="bDowntimeHours" placeholder="0"><div class="gbp-field"><input type="number" min="0" data-key="bRevPerHour" placeholder="£/hr revenue"></div></div>
+      <div class="field"><b>Audit / assurance prep hours per year</b><input type="number" min="0" data-key="bAuditHours" placeholder="0"><div class="gbp-field"><input type="number" min="0" data-key="bAuditHourlyCost" placeholder="£/hr"></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 5 — ROSI CALCULATOR -->
+<section class="sheet" id="page5">
+  <div class="sheet-bar"></div>
+  <div class="sheet-body">
+    <p class="eyebrow">ROSI calculation worksheet</p>
+    <h2 style="font-size:26px">Quantify annual value</h2>
+    <p class="lead">Use conservative assumptions. Avoid double-counting — don't count the same downtime saving as both breach-loss avoided and revenue protected. Every figure below updates the live snapshot in the corner of the screen.</p>
+
+    <div class="tbl-wrap">
+    <table class="calctbl">
+      <thead><tr><th style="width:22%">Value component</th><th style="width:46%">Inputs</th><th style="width:16%">Annual value</th><th style="width:16%">Assumption / source</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="rowlabel"><b>Analyst time released</b><span>Reduced alert noise &amp; workflow automation</span></td>
+          <td><div class="inline-inputs">
+            <div class="iw"><label>Alerts avoided / yr</label><input type="number" min="0" data-key="alertsAvoided" data-calc placeholder="0"></div>
+            <div class="iw"><label>Minutes saved / alert</label><input type="number" min="0" data-key="minutesSaved" data-calc placeholder="0"></div>
+            <div class="iw"><label>Loaded £ / hour</label><div class="gbp-field"><input type="number" min="0" data-key="hourlyCostAnalyst" data-calc placeholder="0"></div></div>
+          </div></td>
+          <td class="outcell mono" id="out-analyst">£0</td>
+          <td><input type="text" data-key="src1" placeholder="e.g. SOC time-and-motion study"></td>
+        </tr>
+        <tr>
+          <td class="rowlabel"><b>Expected incident loss avoided</b><span>Earlier detection and containment</span></td>
+          <td><div class="inline-inputs">
+            <div class="iw"><label>Baseline annual exposure</label><div class="gbp-field"><input type="number" min="0" data-key="baselineLoss" data-calc placeholder="0"></div></div>
+            <div class="iw"><label>Post-SecurityHQ exposure</label><div class="gbp-field"><input type="number" min="0" data-key="postLoss" data-calc placeholder="0"></div></div>
+          </div></td>
+          <td class="outcell mono" id="out-incident">£0</td>
+          <td><input type="text" data-key="src2" placeholder="e.g. FAIR risk model"></td>
+        </tr>
+        <tr>
+          <td class="rowlabel"><b>Technology cost avoided</b><span>Tool consolidation or service replacement</span></td>
+          <td><div class="inline-inputs">
+            <div class="iw"><label>Current annual cost</label><div class="gbp-field"><input type="number" min="0" data-key="currentTech" data-calc placeholder="0"></div></div>
+            <div class="iw"><label>Future annual cost</label><div class="gbp-field"><input type="number" min="0" data-key="futureTech" data-calc placeholder="0"></div></div>
+          </div></td>
+          <td class="outcell mono" id="out-tech">£0</td>
+          <td><input type="text" data-key="src3" placeholder="e.g. vendor rationalisation"></td>
+        </tr>
+        <tr>
+          <td class="rowlabel"><b>Downtime cost avoided</b><span>Higher availability, shorter disruption</span></td>
+          <td><div class="inline-inputs">
+            <div class="iw"><label>Downtime hrs avoided</label><input type="number" min="0" data-key="downtimeHoursAvoided" data-calc placeholder="0"></div>
+            <div class="iw"><label>£ / hour revenue</label><div class="gbp-field"><input type="number" min="0" data-key="revPerHour" data-calc placeholder="0"></div></div>
+          </div></td>
+          <td class="outcell mono" id="out-downtime">£0</td>
+          <td><input type="text" data-key="src4" placeholder="e.g. finance-agreed hourly rate"></td>
+        </tr>
+        <tr>
+          <td class="rowlabel"><b>Audit &amp; assurance efficiency</b><span>Framework mapping and reporting</span></td>
+          <td><div class="inline-inputs">
+            <div class="iw"><label>Hours avoided</label><input type="number" min="0" data-key="auditHoursAvoided" data-calc placeholder="0"></div>
+            <div class="iw"><label>£ / hour</label><div class="gbp-field"><input type="number" min="0" data-key="auditHourlyCost2" data-calc placeholder="0"></div></div>
+          </div></td>
+          <td class="outcell mono" id="out-audit">£0</td>
+          <td><input type="text" data-key="src5" placeholder="e.g. compliance team estimate"></td>
+        </tr>
+        <tr>
+          <td class="rowlabel"><b>Growth enablement</b><span>Security assurance supporting deals or renewals</span></td>
+          <td><div class="inline-inputs">
+            <div class="iw"><label>Incremental gross profit</label><div class="gbp-field"><input type="number" min="0" data-key="growthValue" data-calc placeholder="0"></div></div>
+          </div></td>
+          <td class="outcell mono" id="out-growth">£0</td>
+          <td><input type="text" data-key="src6" placeholder="e.g. sales-attributed deals"></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr><td colspan="2"><b>Total annual value</b></td><td class="outcell mono" id="out-total">£0</td><td></td></tr>
+        <tr><td colspan="2"><b>Annual SecurityHQ investment</b></td><td><div class="gbp-field"><input type="number" min="0" data-key="annualInvestment" data-calc placeholder="0"></div></td><td></td></tr>
+      </tfoot>
+    </table>
+    </div>
+
+    <div class="formula">
+      <strong>Return on Security Investment</strong>
+      <code>ROSI = (total annual value − annual investment) ÷ annual investment × 100</code>
+      <span>Payback period in months = annual investment ÷ total annual value × 12</span>
+      <div class="liveline">
+        <div>Return on investment<b class="mono" id="live-rosi">—</b></div>
+        <div>Payback period<b class="mono" id="live-payback">—</b></div>
+        <div>Value per £1 invested<b class="mono" id="live-perpound">—</b></div>
+      </div>
+    </div>
+
+    <div class="calc-grid">
+      <div class="callout">
+        <h3>Board headline</h3>
+        <p>"For every £1 invested in SecurityHQ, <span id="custDisplay5">this programme</span> is expected to create or protect <span class="figure mono" id="headlinePerPound">£0.00</span> in annual value, with payback in <span class="figure mono" id="headlinePayback">—</span>."</p>
+      </div>
+      <div class="next">
+        <h3>Risk model shortcut</h3>
+        <ol><li>Estimate single-loss cost for a scenario.</li><li>Estimate annual likelihood.</li><li>Calculate annual loss exposure.</li><li>Model a conservative reduction in likelihood or impact.</li></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAGE 6 — QBR SCORECARD -->
+<section class="sheet" id="page6">
+  <div class="sheet-bar"></div>
+  <div class="sheet-body">
+    <p class="eyebrow">QBR &amp; board narrative</p>
+    <h2 style="font-size:26px">Tell a business-value story</h2>
+    <p class="lead">Use this page in an executive meeting, proposal, QBR or renewal conversation. The narrative below fills in automatically from the numbers you've already entered.</p>
+
+    <div class="callout">
+      <h3>Executive value narrative</h3>
+      <p id="narrative">"<span id="custDisplay6a">[Customer]</span> is investing in SecurityHQ to move from fragmented, alert-led security operations to a 24/7, risk-based model. By improving signal quality, accelerating response and making mitigations visible and accountable, the programme aims to reduce annual cyber loss exposure, release operational capacity and protect revenue at risk. Based on the figures entered on page 5, the expected total annual value is <span class="figure mono" id="narrTotal">£0</span> with a payback period of <span class="figure mono" id="narrPayback">—</span>."</p>
+    </div>
+
+    <div class="worksheet" style="margin-top:18px">
+      <h3>Outcome scorecard for QBRs</h3>
+      <p class="sub">Baseline vs. current — update every quarter</p>
+      <div class="scorefield"><b>Risk: critical risks identified, owned and mitigated</b><input type="text" data-key="s1Base" placeholder="Baseline"><input type="text" data-key="s1Cur" placeholder="Current"></div>
+      <div class="scorefield"><b>Response: MTTD / MTTR for critical incidents</b><input type="text" data-key="s2Base" placeholder="Baseline"><input type="text" data-key="s2Cur" placeholder="Current"></div>
+      <div class="scorefield"><b>Efficiency: analyst hours on low-value alerts</b><input type="text" data-key="s3Base" placeholder="Baseline"><input type="text" data-key="s3Cur" placeholder="Current"></div>
+      <div class="scorefield"><b>Resilience: security-related downtime hours</b><input type="text" data-key="s4Base" placeholder="Baseline"><input type="text" data-key="s4Cur" placeholder="Current"></div>
+      <div class="scorefield"><b>Governance: overdue material remediation actions</b><input type="text" data-key="s5Base" placeholder="Baseline"><input type="text" data-key="s5Cur" placeholder="Current"></div>
+      <div class="scorefield"><b>Commercial: annual value realised vs. target</b>
+        <div class="gbp-field"><input type="number" min="0" data-key="s6Target" data-calc placeholder="Target"></div>
+        <div class="gbp-field"><input type="number" min="0" data-key="s6Cur" data-calc placeholder="Current"></div>
+      </div>
+      <div class="scorefield"><b></b><span></span><span id="s6Badge" class="badge neutral">Enter target &amp; current</span></div>
+    </div>
+
+    <div class="calc-grid">
+      <div class="next"><h3>Recommended cadence</h3><ol><li>Establish baseline during discovery or onboarding.</li><li>Validate assumptions with finance and operational owners.</li><li>Review leading indicators monthly.</li><li>Recalculate realised value quarterly.</li><li>Use the narrative at renewal and expansion.</li></ol></div>
+      <div class="next"><h3>Data integrity rules</h3><ol><li>Separate realised value from projected value.</li><li>Use customer data ahead of generic benchmarks.</li><li>State confidence levels and evidence sources.</li><li>Avoid counting one benefit twice.</li><li>Agree calculation ownership in writing.</li></ol></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="pagefoot">
+  <span>SecurityHQ · Cybersecurity Value Driver Workbook</span>
+  <span>Saved locally in this browser — nothing here leaves your device.</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var STORE_KEY = "shq-value-workbook-v1";
+  var gbp0 = new Intl.NumberFormat("en-GB",{style:"currency",currency:"GBP",maximumFractionDigits:0});
+  var gbp2 = new Intl.NumberFormat("en-GB",{style:"currency",currency:"GBP",maximumFractionDigits:2});
+
+  function loadState(){
+    try{ return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }catch(e){ return {}; }
+  }
+  function saveState(state){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(state)); }catch(e){}
+  }
+  var state = loadState();
+
+  var fields = Array.prototype.slice.call(document.querySelectorAll("[data-key]"));
+  fields.forEach(function(el){
+    var key = el.dataset.key;
+    if(state[key] !== undefined){ el.value = state[key]; }
+    el.addEventListener("input", function(){
+      state[key] = el.value;
+      saveState(state);
+      onFieldChange();
+    });
+    el.addEventListener("change", onFieldChange);
+  });
+
+  function num(key){
+    var v = state[key];
+    var n = parseFloat(v);
+    return isNaN(n) ? 0 : n;
+  }
+
+  function setText(id, text){
+    var el = document.getElementById(id);
+    if(el) el.textContent = text;
+  }
+
+  function updateCustomerDisplays(){
+    var name = (state.fCustomer || "").trim();
+    var text = name || null;
+    ["custDisplay1","custDisplay2"].forEach(function(id){ setText(id, text ? name : (id==="custDisplay1"?"your customer":"the customer's")); });
+    setText("custDisplay5", text ? name : "this programme");
+    setText("custDisplay6a", text ? name : "[Customer]");
+  }
+
+  function recalc(){
+    var valAnalyst = num("alertsAvoided") * num("minutesSaved") / 60 * num("hourlyCostAnalyst");
+    var valIncident = Math.max(0, num("baselineLoss") - num("postLoss"));
+    var valTech = Math.max(0, num("currentTech") - num("futureTech"));
+    var valDowntime = num("downtimeHoursAvoided") * num("revPerHour");
+    var valAudit = num("auditHoursAvoided") * num("auditHourlyCost2");
+    var valGrowth = num("growthValue");
+
+    var total = valAnalyst + valIncident + valTech + valDowntime + valAudit + valGrowth;
+    var investment = num("annualInvestment");
+
+    setText("out-analyst", gbp0.format(valAnalyst));
+    setText("out-incident", gbp0.format(valIncident));
+    setText("out-tech", gbp0.format(valTech));
+    setText("out-downtime", gbp0.format(valDowntime));
+    setText("out-audit", gbp0.format(valAudit));
+    setText("out-growth", gbp0.format(valGrowth));
+    setText("out-total", gbp0.format(total));
+
+    var rosiText = "—", paybackText = "—", perPoundText = "—";
+    var trayState = "neutral";
+    if(investment > 0 && total > 0){
+      var rosiPct = (total - investment) / investment * 100;
+      var paybackMonths = investment / total * 12;
+      var perPound = total / investment;
+      rosiText = (rosiPct >= 0 ? "+" : "") + rosiPct.toFixed(0) + "%";
+      paybackText = paybackMonths.toFixed(1) + " months";
+      perPoundText = gbp2.format(perPound);
+      trayState = rosiPct >= 0 ? "positive" : "negative";
+    } else if(investment > 0){
+      rosiText = "-100%";
+      paybackText = "—";
+      perPoundText = gbp2.format(0);
+    }
+
+    setText("live-rosi", rosiText);
+    setText("live-payback", paybackText);
+    setText("live-perpound", perPoundText);
+    setText("headlinePerPound", perPoundText === "—" ? "£0.00" : perPoundText);
+    setText("headlinePayback", paybackText);
+
+    setText("trayTotal", gbp0.format(total));
+    setText("trayInvestment", gbp0.format(investment));
+    setText("trayRosi", rosiText);
+    setText("trayPayback", paybackText);
+    document.getElementById("tray").dataset.state = trayState;
+
+    setText("narrTotal", gbp0.format(total));
+    setText("narrPayback", paybackText);
+
+    var target = num("s6Target"), cur = num("s6Cur");
+    var badge = document.getElementById("s6Badge");
+    if(target > 0 && (state.s6Cur !== undefined && state.s6Cur !== "")){
+      var pct = cur / target * 100;
+      badge.textContent = pct.toFixed(0) + "% of target realised";
+      badge.className = "badge " + (pct >= 100 ? "on-track" : "behind");
+    } else {
+      badge.textContent = "Enter target & current";
+      badge.className = "badge neutral";
+    }
+  }
+
+  function onFieldChange(){
+    updateCustomerDisplays();
+    recalc();
+  }
+
+  document.getElementById("resetBtn").addEventListener("click", function(){
+    if(confirm("Clear every field in this workbook? This cannot be undone.")){
+      localStorage.removeItem(STORE_KEY);
+      location.reload();
+    }
+  });
+  document.getElementById("printBtn").addEventListener("click", function(){ window.print(); });
+
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".railnav a"));
+  var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute("href")); });
+  if("IntersectionObserver" in window){
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          var idx = sections.indexOf(entry.target);
+          navLinks.forEach(function(a,i){ a.classList.toggle("active", i===idx); });
+        }
+      });
+    }, {rootMargin:"-45% 0px -50% 0px", threshold:0});
+    sections.forEach(function(s){ if(s) obs.observe(s); });
+  }
+
+  updateCustomerDisplays();
+  recalc();
+})();
+</script>
