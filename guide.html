@@ -1,0 +1,241 @@
+<meta charset="utf-8">
+<title>SecurityHQ Workbook Guide</title>
+<meta name="description" content="How to fill in and use the SecurityHQ interactive value workbook.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,440;9..144,560;9..144,650&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --paper:#e9eef3;
+  --panel:#ffffff;
+  --panel-2:#f4f7fa;
+  --ink:#0d1f30;
+  --navy:#0a2036;
+  --navy-2:#0f2f4c;
+  --blue:#0d6fa0;
+  --blue-soft:#e4f0f6;
+  --sage:#4c6b3f;
+  --sage-soft:#e6ede1;
+  --amber:#a3691f;
+  --amber-soft:#f3e7d4;
+  --line:#d7dfe6;
+  --slate:#57697a;
+  --slate-soft:#8195a5;
+  --focus:#0d6fa0;
+  --shadow:0 10px 30px -12px rgba(10,32,54,.28);
+}
+*{box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"IBM Plex Sans",Arial,Helvetica,sans-serif;line-height:1.6;font-size:15px}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:"Fraunces","Iowan Old Style",Georgia,serif;font-weight:650;letter-spacing:-.01em;text-wrap:balance;color:var(--navy);margin:0}
+p{margin:0 0 12px}
+a{color:var(--blue)}
+::selection{background:var(--blue);color:#fff}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+.masthead{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;box-shadow:0 1px 0 rgba(255,255,255,.08)}
+.masthead-top{height:4px;background:linear-gradient(90deg,var(--blue),#4fb7cf,var(--sage))}
+.masthead-row{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:11px 20px}
+.wordmark{font-family:"Fraunces",Georgia,serif;font-weight:650;font-size:18px;letter-spacing:-.01em;white-space:nowrap}
+.wordmark b{color:#7fd0e6;font-weight:650}
+.backlink{margin-left:auto;color:#b9c9d6;text-decoration:none;font-size:12.5px;font-weight:600;letter-spacing:.02em;padding:7px 12px;border:1px solid rgba(255,255,255,.3);border-radius:5px;white-space:nowrap;transition:background .15s,color .15s}
+.backlink:hover{background:rgba(255,255,255,.12);color:#fff}
+
+main{max-width:760px;margin:0 auto;padding:38px 20px 90px}
+.sheet{background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);margin-bottom:22px;overflow:hidden}
+.sheet-bar{height:5px;background:linear-gradient(90deg,var(--blue),#4fb7cf,var(--sage))}
+.sheet-body{padding:38px 42px}
+@media (max-width:640px){.sheet-body{padding:26px 20px}}
+
+.eyebrow{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);font-weight:700;margin:0 0 8px}
+.lead{color:var(--slate);font-size:15px;max-width:560px;margin:8px 0 0}
+h1{font-size:clamp(28px,4.4vw,38px);line-height:1.1;margin:8px 0 6px;max-width:560px}
+
+.toc{display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+.toc a{display:flex;gap:8px;align-items:baseline;color:var(--ink);text-decoration:none;font-size:13px;padding:5px 0}
+.toc a:hover{color:var(--blue)}
+.toc a b{font-family:"IBM Plex Mono";color:var(--blue-soft);background:var(--navy);color:#fff;font-size:10px;border-radius:3px;padding:1px 6px;flex:none}
+@media (max-width:560px){.toc{grid-template-columns:1fr}}
+
+.step{border-top:1px solid var(--line);padding:22px 0;scroll-margin-top:60px}
+.step:first-of-type{border-top:0;padding-top:6px}
+.step-head{display:flex;align-items:baseline;gap:10px;margin-bottom:8px}
+.step-n{font-family:"IBM Plex Mono";font-size:11px;font-weight:600;color:#fff;background:var(--blue);border-radius:3px;padding:2px 7px;flex:none}
+.step h2{font-size:19px}
+.step p{color:#334656;font-size:13.5px;max-width:600px}
+.step ul{margin:8px 0 0;padding-left:18px;color:#334656;font-size:13.5px}
+.step li{margin-bottom:6px}
+.tag{display:inline-block;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:2px 7px;border-radius:20px;margin-left:2px}
+.tag.fillin{background:var(--sage-soft);color:var(--sage)}
+.tag.reference{background:var(--blue-soft);color:var(--blue)}
+.tag.auto{background:var(--amber-soft);color:var(--amber)}
+
+.formula{margin:14px 0 0;background:var(--panel-2);border:1px solid var(--line);border-radius:7px;padding:14px 18px}
+.formula strong{font-size:12.5px;color:var(--navy);font-weight:700;display:block;margin-bottom:4px}
+.formula code{font-family:"IBM Plex Mono";display:block;font-size:14px;color:var(--blue);font-weight:600;margin:4px 0}
+
+.tbl-wrap{overflow-x:auto;margin-top:12px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{background:var(--navy);color:#fff;padding:8px 10px;text-align:left;font-size:10px;font-weight:600}
+.tbl td{border:1px solid var(--line);padding:8px 10px;vertical-align:top}
+.tbl tbody tr:nth-child(even) td{background:var(--panel-2)}
+.tbl td.formulacell{font-family:"IBM Plex Mono";color:var(--blue);font-size:11.5px}
+
+.callout{background:linear-gradient(150deg,var(--navy),var(--navy-2));color:#fff;border-radius:8px;padding:18px 20px;margin-top:14px}
+.callout h3{font-family:"IBM Plex Sans";margin:0 0 6px;font-size:12.5px;font-weight:700;color:#9fc7d8;text-transform:uppercase;letter-spacing:.06em}
+.callout p{font-size:13.5px;margin:0;color:#eaf1f5;line-height:1.6}
+.callout p:last-child{margin-bottom:0}
+
+.pillrow{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.pillrow div{background:var(--panel-2);border:1px solid var(--line);border-radius:6px;padding:8px 11px;font-size:12px;color:var(--slate);flex:1 1 150px}
+.pillrow b{display:block;color:var(--navy);font-size:12.5px;margin-bottom:2px}
+
+footer.pagefoot{max-width:760px;margin:0 auto;padding:0 20px 40px;color:var(--slate-soft);font-size:10.5px;display:flex;justify-content:space-between;gap:20px}
+</style>
+
+<div class="masthead">
+  <div class="masthead-top"></div>
+  <div class="masthead-row">
+    <div class="wordmark">Security<b>HQ</b></div>
+    <a class="backlink" href="https://csreimagined.github.io/securityhq-workbook/">← Back to workbook</a>
+  </div>
+</div>
+
+<main>
+
+<section class="sheet">
+  <div class="sheet-bar"></div>
+  <div class="sheet-body">
+    <p class="eyebrow">User guide</p>
+    <h1>How to fill in the value workbook</h1>
+    <p class="lead">A short walkthrough for whoever's running the conversation — account manager, sales engineer or CISO — on what to enter on each page, what to just read aloud, and how the maths underneath it works.</p>
+
+    <div class="toc">
+      <a href="#who"><b>00</b> Who should be in the room</a>
+      <a href="#step1"><b>01</b> Cover</a>
+      <a href="#step2"><b>02</b> Value map &amp; translation</a>
+      <a href="#step3"><b>03</b> Baseline worksheet</a>
+      <a href="#step4"><b>04</b> ROSI calculator</a>
+      <a href="#step5"><b>05</b> QBR scorecard</a>
+      <a href="#data"><b>06</b> Where your data goes</a>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="who">
+  <div class="sheet-body">
+    <div class="step">
+      <div class="step-head"><span class="step-n">00</span><h2>Who should be in the room</h2></div>
+      <p>The workbook is designed to be filled in live, on a call or in a workshop — not emailed over as a blank template. Get three people involved before you start page 4:</p>
+      <div class="pillrow">
+        <div><b>Security sponsor</b>Owns the alert, incident and SOC numbers — CISO, security manager or IT lead.</div>
+        <div><b>Finance partner</b>Confirms hourly rates, downtime cost and what "value" means to the board.</div>
+        <div><b>Operational owner</b>Knows what critical systems and availability actually look like day to day.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="step1">
+  <div class="sheet-body">
+
+    <div class="step">
+      <div class="step-head"><span class="step-n">01</span><h2>Cover</h2><span class="tag fillin">Fill in</span></div>
+      <p>Enter the customer name, executive sponsor and date. The customer name isn't just decoration — type it once here and it carries through automatically to the headline, the board narrative on page 6, and the "for every £1 invested…" line, so you don't have to repeat yourself.</p>
+    </div>
+
+    <div class="step" id="step2">
+      <div class="step-head"><span class="step-n">02</span><h2>Value map &amp; translation matrix</h2><span class="tag reference">Reference — nothing to fill in</span></div>
+      <p>Pages 2 and 3 are talking points, not forms. Use the value map to frame the conversation around the customer's actual pain rather than SecurityHQ's feature list, and use the translation matrix as a script: capability → operational change → business outcome. Skim these live rather than reading them verbatim.</p>
+    </div>
+
+  </div>
+</section>
+
+<section class="sheet" id="step3">
+  <div class="sheet-body">
+    <div class="step">
+      <div class="step-head"><span class="step-n">03</span><h2>Baseline worksheet</h2><span class="tag fillin">Fill in</span></div>
+      <p>This is where you capture the customer's <em>current</em> state — before any calculation happens. It's split into three groups:</p>
+      <ul>
+        <li><b>Operating profile</b> — scope, critical systems, current SOC model, and current annual security spend. Mostly context; the spend figure is useful later for sanity-checking the technology-cost row on page 5.</li>
+        <li><b>Alert &amp; response baseline</b> — alert volume, false-positive rate, triage time and loaded hourly cost. These feed directly into the "analyst time released" calculation.</li>
+        <li><b>Incident &amp; downtime baseline</b> — incident history, downtime hours and audit prep effort. These set the "before" picture that page 5 measures improvement against.</li>
+      </ul>
+      <p>Use a range and mark the confidence level (High / Medium / Low) rather than leaving a field blank — a defensible estimate beats a gap when this goes in front of a board.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="step4">
+  <div class="sheet-body">
+    <div class="step">
+      <div class="step-head"><span class="step-n">04</span><h2>ROSI calculator</h2><span class="tag fillin">Fill in — this is the core page</span></div>
+      <p>Six value components, each with its own inputs. Every field recalculates live — the total, ROSI and payback in the corner tray update as you type, so you can move numbers around in real time with the customer watching.</p>
+
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th>Value component</th><th>What it needs</th><th>How it's calculated</th></tr></thead>
+          <tbody>
+            <tr><td>Analyst time released</td><td>Alerts avoided/yr, minutes saved per alert, loaded £/hour</td><td class="formulacell">alerts × minutes ÷ 60 × £/hr</td></tr>
+            <tr><td>Expected incident loss avoided</td><td>Baseline annual loss exposure, post-SecurityHQ exposure</td><td class="formulacell">baseline − post</td></tr>
+            <tr><td>Technology cost avoided</td><td>Current annual tool cost, future annual cost</td><td class="formulacell">current − future</td></tr>
+            <tr><td>Downtime cost avoided</td><td>Downtime hours avoided, £/hour revenue or productivity</td><td class="formulacell">hours × £/hr</td></tr>
+            <tr><td>Audit &amp; assurance efficiency</td><td>Hours avoided, £/hour</td><td class="formulacell">hours × £/hr</td></tr>
+            <tr><td>Growth enablement</td><td>Incremental gross profit attributable to security assurance</td><td class="formulacell">entered directly</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="formula">
+        <strong>Once every row has a value, the worksheet totals them and works out:</strong>
+        <code>ROSI = (total annual value − annual investment) ÷ annual investment × 100</code>
+        <code>Payback (months) = annual investment ÷ total annual value × 12</code>
+      </div>
+
+      <p style="margin-top:14px"><b>Three rules to keep the number defensible:</b></p>
+      <ul>
+        <li><b>Be conservative.</b> When in doubt, round down. A credible £400k beats an inflated £1.2m.</li>
+        <li><b>Don't double-count.</b> A downtime saving belongs in one row only — don't also fold it into incident loss avoided.</li>
+        <li><b>Write down the source.</b> Use the "Assumption / source" column on the right of each row — "SOC time-and-motion study", "finance-agreed hourly rate" — so the number survives being challenged later.</li>
+      </ul>
+
+      <div class="callout">
+        <h3>What "annual SecurityHQ investment" means</h3>
+        <p>This is the customer's all-in annual cost for the service — not a one-off. It's the denominator for both ROSI and payback, so get it from the actual proposal or contract rather than estimating it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="step5">
+  <div class="sheet-body">
+    <div class="step">
+      <div class="step-head"><span class="step-n">05</span><h2>QBR scorecard</h2><span class="tag fillin">Fill in quarterly</span><span class="tag auto">Narrative auto-fills</span></div>
+      <p>This page is built for reuse — come back to it every quarter rather than filling it in once. The executive narrative at the top rewrites itself from whatever total value and payback you entered on page 5, so re-check it after you update the numbers.</p>
+      <p>The six-row scorecard tracks baseline vs. current for risk, response time, analyst efficiency, downtime, remediation backlog and realised commercial value. The last row compares realised value against your target automatically and flags on-track vs. behind.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sheet" id="data">
+  <div class="sheet-body">
+    <div class="step">
+      <div class="step-head"><span class="step-n">06</span><h2>Where your data goes</h2></div>
+      <p>Everything you type is saved to <span class="mono">localStorage</span> in the browser you're using — nothing is sent to a server. That means:</p>
+      <ul>
+        <li>Closing the tab and coming back later keeps your entries, on that same device and browser.</li>
+        <li>It <em>won't</em> follow you to a different laptop or browser — if you need to hand this to a colleague, use <b>Print / PDF</b> to export a filled-in copy first.</li>
+        <li><b>Reset</b> in the top bar wipes every field on this device. There's no undo, so export first if you need a record.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="pagefoot">
+  <span>SecurityHQ · Value Workbook Guide</span>
+  <span><a href="https://csreimagined.github.io/securityhq-workbook/">Open the workbook →</a></span>
+</footer>

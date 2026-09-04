@@ -147,7 +147,7 @@ input::placeholder{color:var(--slate-soft)}
 .calctbl{width:100%;border-collapse:collapse;margin-top:14px;font-size:12px}
 .calctbl th{background:var(--navy);color:#fff;padding:9px 10px;text-align:left;font-size:10.5px;font-weight:600}
 .calctbl td{border:1px solid var(--line);padding:10px;vertical-align:top}
-.calctbl tr:nth-child(even) td{background:var(--panel-2)}
+.calctbl tbody tr:nth-child(even) td{background:var(--panel-2)}
 .rowlabel b{display:block;font-size:12.5px;color:var(--navy);font-weight:700}
 .rowlabel span{font-size:10.5px;color:var(--slate-soft)}
 .inline-inputs{display:flex;flex-wrap:wrap;align-items:start;gap:10px 8px}
@@ -210,6 +210,7 @@ footer.pagefoot{max-width:880px;margin:0 auto;padding:0 20px 40px;color:var(--sl
       <a href="#page4" data-n="4">Baseline</a>
       <a href="#page5" data-n="5">ROSI calc</a>
       <a href="#page6" data-n="6">QBR score</a>
+      <a href="https://csreimagined.github.io/securityhq-workbook/guide.html" style="color:#7fd0e6">Guide ↗</a>
     </nav>
     <div class="tools">
       <button class="btn ghost" id="resetBtn" type="button">Reset</button>
@@ -600,7 +601,7 @@ footer.pagefoot{max-width:880px;margin:0 auto;padding:0 20px 40px;color:var(--sl
   });
   document.getElementById("printBtn").addEventListener("click", function(){ window.print(); });
 
-  var navLinks = Array.prototype.slice.call(document.querySelectorAll(".railnav a"));
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.railnav a[href^="#"]'));
   var sections = navLinks.map(function(a){ return document.querySelector(a.getAttribute("href")); });
   if("IntersectionObserver" in window){
     var obs = new IntersectionObserver(function(entries){
